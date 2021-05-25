@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Farm To Market</title>
+    <link rel="stylesheet" href="game.css">
+  </head>
+
+  <body>
+
+    <h1 id="title">
+      <!-- 🐄 -->
+      <!-- 👩🏽‍🌾 -->
+      <!-- 🚜 -->
+      Farm To Market
+    </h1>
+
+    <div id="helpButton">?</div>
+
+    <div id="helpModal" class="helpModal"/>
+      <div class="helpModalContent">
+        <span id="modalClose" class="modalClose">&times;</span>
+        <h3 style="text-align: center;">Instructions</h3>
+        <p>Grow crops in your farm.</p>
+        <h3 style="text-align: center;">Huge Thanks To</h3>
+        <ul>
+          <li>
+            Kevin Masaryk for <a href="https://github.com/kmasaryk/FarmSim">FarmSim</a>.
+          </li>
+          <li>
+            Crop icons by <a href="https://opengameart.org/users/josehzz">josehzz</a>.
+          </li>
+          <li>
+            Coins icon by Kiran Shastry, from the <a href="https://thenounproject.com/search/?q=coin&i=871834">Noun Project</a>.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="gold">
+      <img id="goldImg" src="images/coins.svg"><span id="goldAmt">0</span>
+    </div>
+
+    <div id="inventoryContainer">
+      <span id="inventoryLabel">Inventory</span>
+      <table id="inventory">
+        <tr>
+          <td id="invt0"></td><td id="invt1"></td>
+        </tr>
+        <tr>
+          <td id="invt2"></td><td id="invt3"></td>
+        </tr>
+        <tr>
+          <td id="invt4"></td><td id="invt5"></td>
+        </tr>
+        <tr>
+          <td id="invt6"></td><td id="invt7"></td>
+        </tr>
+        <tr>
+          <td id="invt8"></td><td id="invt9"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="fieldContainer">
+      <table id="field">
+        <tr>
+          <td id="plot0"></td><td id="plot1"></td>
+          <td id="plot2"></td><td id="plot3"></td>
+        </tr>
+        <tr>
+          <td id="plot4"></td><td id="plot5"></td>
+          <td id="plot6"></td><td id="plot7"></td>
+        </tr>
+        <tr>
+          <td id="plot8"></td><td id="plot9"></td>
+          <td id="plot10"></td><td id="plot11"></td>
+        </tr>
+        <tr>
+          <td id="plot12"></td><td id="plot13"></td>
+          <td id="plot14"></td><td id="plot15"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="marketContainer">
+      <span id="marketLabel">Market</span>
+      <div id="market">Drop produce or seeds here to sell</div>
+    </div>
+
+    <div id="suppliesContainer">
+      <span id="suppliesLabel">Store</span>
+      <table id="supplies">
+        <tr>
+          <td id="shelf0"></td><td id="shelf1"></td><td id="shelf2"></td>
+        </tr>
+        <tr>
+          <td id="shelf3"></td><td id="shelf4"></td><td id="shelf5"></td>
+        </tr>
+        <tr>
+          <td id="shelf6"></td><td id="shelf7"></td><td id="shelf8"></td>
+        </tr>
+        <tr>
+          <td id="shelf9"></td><td id="shelf10"></td><td id="shelf11"></td>
+        </tr>
+        <tr>
+          <td id="shelf12"></td><td id="shelf13"></td><td id="shelf14"></td>
+        </tr>
+        <tr>
+          <td id="shelf15"></td><td id="shelf16"></td><td id="shelf17"></td>
+        </tr>
+        <tr>
+          <td id="shelf18"></td><td id="shelf19"></td><td id="shelf20"></td>
+        </tr>
+      </table>
+      <button type="button" id="buyButton">Buy</button>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+
+</html>
