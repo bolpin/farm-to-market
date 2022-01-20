@@ -309,3 +309,29 @@ table#inventory img {
 }
 
 
+.breathe {
+  animation-name: breathe;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+}
+
+@keyframes breathe {
+  0% {
+    font-size: 24px;
+    color: black;
+  }
+
+  50% {
+    font-size: 28px;
+    color: gold;
+  }
+
+  100% {
+    font-size: 24px;
+    color: black;
+  }
+}
+

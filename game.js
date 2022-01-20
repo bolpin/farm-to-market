@@ -21,8 +21,8 @@
 
 
 const cropImagePath = "images/48x48/"
-const millisecondsPerSecond = 1000;
-const millisecondsPerMinute = 60000;
+const oneSecond = 1000;
+const oneMinute = 60000;
 
 
 function clone(instance) {
@@ -53,9 +53,9 @@ class Seed extends Item {
     this.state = "seed"; // seed | planted | sprout | sprout2 | sprout3 | sprout4 | ripe
     this.seedImage = cropImagePath + params.name + "0.png";
     this.sproutImage = cropImagePath + params.name + "1.png";
-    // this.sprout2Image = cropImagePath + params.name + "2.png";
-    // this.sprout3Image = cropImagePath + params.name + "3.png";
-    // this.sprout4Image = cropImagePath + params.name + "4.png";
+    this.sprout2Image = cropImagePath + params.name + "2.png";
+    this.sprout3Image = cropImagePath + params.name + "3.png";
+    this.sprout4Image = cropImagePath + params.name + "4.png";
     this.ripeImage = cropImagePath + params.name + "5.png";
     this.buyPrice = params.buyPrice;
     this.sellPrice = params.sellPrice;
@@ -91,12 +91,12 @@ function currentImage(item) {
       return item.ripeImage;
     case "sprout":
       return item.sproutImage;
-    // case "sprout2":
-    //   return item.sprout2Image;
-    // case "sprout3":
-    //   return item.sprout3Image;
-    // case "sprout4":
-    //   return item.sprout4Image;
+    case "sprout2":
+      return item.sprout2Image;
+    case "sprout3":
+      return item.sprout3Image;
+    case "sprout4":
+      return item.sprout4Image;
     default:
       return item.seedImage;
   }
@@ -118,13 +118,13 @@ function getName(item) {
 function timeUntilRipe(seed) {
   const now = new Date().getTime();
   const ripeTime = seed.timePlanted.getTime() +
-    (millisecondsPerMinute * (seed.timeSpanToSprout + seed.timeSpanFromSproutToRipe));
+    (oneMinute * (seed.timeSpanToSprout + seed.timeSpanFromSproutToRipe));
 
   // console.log(seed.id + " " + seed.name + " TimePlanted: " +
   // seed.timePlanted +  " RipeTime: " + ripeTime);
 
   if (now < ripeTime) {
-    let secs = (ripeTime - now) / millisecondsPerSecond;
+    let secs = (ripeTime - now) / oneSecond;
     if (secs < 60) {
       return Math.trunc(secs) + " seconds";
     } else {
@@ -242,8 +242,8 @@ function setupSeeds() {
   seedAttributes = {
     name: "Corn",
     type: "seed",
-    timeSpanToSprout: 1,
-    timeSpanFromSproutToRipe: 4,
+    timeSpanToSprout: 0.1,
+    timeSpanFromSproutToRipe: 0.4,
     buyPrice: 3,
     sellPrice: 6
   };
@@ -344,7 +344,7 @@ function setupSeeds() {
     type: "seed",
     timeSpanToSprout: 0.2,
     timeSpanFromSproutToRipe: 5,
-    buyPrice: 1,
+    buyPrice: 65,
     sellPrice: 100
   };
   seeds.push(new Seed(seedAttributes));
@@ -463,6 +463,7 @@ function setupEventHandlers() {
   }
 }
 
+// TODO: refactor
 function checkForGrowth() {
   // console.log("in checkForGrowth");
   const now = new Date().getTime();
@@ -470,27 +471,29 @@ function checkForGrowth() {
   model.field.forEach(function(plot) {
     if (plot.name !== "nothing") {
       const sproutTime = plot.timePlanted.getTime() +
-        plot.timeSpanToSprout * millisecondsPerMinute;
+        plot.timeSpanToSprout * oneMinute;
       const ripeTime = sproutTime +
-        plot.timeSpanFromSproutToRipe * millisecondsPerMinute;
+        plot.timeSpanFromSproutToRipe * oneMinute;
       const numSproutStages = 4;
       const sproutStageTimeSpan = (ripeTime - sproutTime)/numSproutStages;
-      // const sprout2Time = sproutTime + 1 * sproutStageTimeSpan;
-      // const sprout3Time = sproutTime + 2 * sproutStageTimeSpan;
-      // const sprout4Time = sproutTime + 3 * sproutStageTimeSpan;
 
       if (now > sproutTime) {
         if (plot.state === "planted") {
           console.log("time to sprout");
           plot.state = "sprout";
-        } else if (plot.state === "sprout" && now > ripeTime) {
-        // } else if (plot.state === "sprout" && now > sprout2Time) {
-        //   plot.state = "sprout2";
-        // } else if (plot.state === "sprout2" && now > sprout3Time) {
-        //   plot.state = "sprout3";
-        // } else if (plot.state === "sprout3" && now > sprout4Time) {
-        //   plot.state = "sprout4";
-        // } else if (plot.state === "sprout4" && now > ripeTime) {
+        } else if (
+          plot.state === "sprout" &&
+          now > ripeTime-(3*sproutStageTimeSpan)) {
+          plot.state = "sprout2";
+        } else if (
+          plot.state === "sprout2" &&
+          now > ripeTime-(2*sproutStageTimeSpan)) {
+          plot.state = "sprout3";
+        } else if (
+          plot.state === "sprout3" &&
+          now > ripeTime-(1*sproutStageTimeSpan)) {
+          plot.state = "sprout4";
+        } else if (plot.state === "sprout4" && now > ripeTime) {
           console.log("ripe!");
           plot.state = "ripe";
         }
@@ -876,6 +879,8 @@ let view = {
   updateGoldDisplay: function(count) {
     let textBox = document.getElementById("goldAmt");
     textBox.innerHTML = count;
+    textBox.setAttribute('class', 'breathe');
+    setTimeout(() => textBox.removeAttribute('class'), 1600);
   },
 
   setupMarket: function() {
@@ -902,7 +907,7 @@ function startGame() {
     function() {
       checkForGrowth();
       view.updateField();
-    }, millisecondsPerSecond
+    }, oneSecond
   );
 }
 window.onload = startGame;
